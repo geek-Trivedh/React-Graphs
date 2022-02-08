@@ -1,23 +1,49 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {VictoryLine, VictoryChart, VictoryTheme} from 'victory-native';
+import {StyleSheet, Text, View} from 'react-native';
+import {
+  VictoryLine,
+  VictoryChart,
+  VictoryTheme,
+  VictoryScatter,
+  VictoryCursorContainer,
+} from 'victory-native';
+import {data} from './stockData';
 
 const App = () => {
   return (
     <View style={styles.container}>
+      {/* <VictoryScatter
+        containerComponent={
+          <VictoryCursorContainer
+            cursorLabel={({datum}) =>
+              `${Math.round(datum.x, 2)}, ${Math.round(datum.y, 2)}`
+            }
+          />
+        }
+      /> */}
       <VictoryChart theme={VictoryTheme.material}>
         <VictoryLine
           style={{
             data: {stroke: '#c43a31'},
             parent: {border: '1px solid #ccc'},
           }}
-          data={[
-            {x: 1, y: 2},
-            {x: 2, y: 3},
-            {x: 3, y: 5},
-            {x: 4, y: 4},
-            {x: 5, y: 7},
-          ]}
+          containerComponent={
+            <VictoryCursorContainer
+              cursorLabel={({datum}) =>
+                `${Math.round(datum.x, 2)}, ${Math.round(datum.y, 2)}`
+              }
+            />
+          }
+          animate={{
+            duration: 2000,
+            onLoad: {duration: 1000},
+          }}
+          interpolation="natural"
+          theme={VictoryTheme.material}
+          // categories={{x: []}}
+          data={data.map(el => ({y: el.Close}))}
+          // labels={({datum}) => datum.y}
+          // labelComponent={<Text renderInPortal dy={-20} />}
         />
       </VictoryChart>
     </View>
